@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Грядет Пришествие</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🔥</text></svg>">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #000000, #1a0000);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Georgia', serif;
+            overflow: hidden;
+            cursor: pointer;
+            padding: 20px;
+            transition: background 1.5s ease;
+            perspective: 1000px;
+        }
+        
+        .container {
+            text-align: center;
+            max-width: 800px;
+            width: 100%;
+            position: relative;
+        }
+        
+        .message {
+            color: #300000;
+            font-size: 6.5vw;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            line-height: 1.3;
+            transition: all 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            padding: 30px;
+            text-shadow: 0 0 5px rgba(80, 0, 0, 0.3);
+            transform-style: preserve-3d;
+            font-weight: 700;
+        }
+        
+        .message:hover {
+            color: #500000;
+            transform: scale(1.03) rotateX(3deg);
+            text-shadow: 0 0 15px rgba(160, 0, 0, 0.7);
+        }
+        
+        .message::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, rgba(255,0,0,0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.8s ease;
+            z-index: -1;
+        }
+        
+        .message:hover::before {
+            opacity: 1;
+        }
+        
+        .hint {
+            color: rgba(200, 0, 0, 0.7);
+            font-size: 16px;
+            margin-top: 30px;
+            transition: all 0.8s ease;
+            letter-spacing: 1px;
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            opacity: 0.8;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 0.8; }
+        }
+        
+        /* Эффект частиц */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #500000;
+            border-radius: 50%;
+            opacity: 0;
+            animation: float 8s infinite linear;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.2;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(20px);
+                opacity: 0;
+            }
+        }
+        
+        /* Адаптация для мобильных устройств */
+        @media (max-width: 768px) {
+            .message {
+                font-size: 10vw;
+                letter-spacing: 3px;
+                padding: 20px;
+            }
+            
+            .hint {
+                font-size: 14px;
+                margin-top: 25px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .message {
+                font-size: 12vw;
+                letter-spacing: 2px;
+                line-height: 1.2;
+                padding: 15px;
+            }
+            
+            .hint {
+                font-size: 12px;
+                margin-top: 20px;
+            }
+        }
+        
+        /* Портретный режим на мобильных */
+        @media (max-height: 500px) and (orientation: portrait) {
+            .message {
+                font-size: 8vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    
+    <div class="container">
+        <div class="message" id="message">сисечки</div>
+        <div class="hint" id="hint">очень большие</div>
+    </div>
+
+    <script>
+        // Создаем частицы
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Случайные начальные позиции
+                const startX = Math.random() * window.innerWidth;
+                const startY = window.innerHeight + Math.random() * 100;
+                const size = Math.random() * 2 + 1;
+                const duration = Math.random() * 10 + 5;
+                
+                particle.style.left = `${startX}px`;
+                particle.style.top = `${startY}px`;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.animationDuration = `${duration}s`;
+                particle.style.animationDelay = `${Math.random() * 5}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        // Обработка клика по тексту
+        const message = document.getElementById('message');
+        const body = document.body;
+        const hint = document.getElementById('hint');
+        
+        message.addEventListener('click', function() {
+            // Плавное затемнение
+            body.style.background = 'linear-gradient(135deg, #1a0000, #000)';
+            message.style.color = '#700000';
+            message.style.textShadow = '0 0 20px rgba(255, 0, 0, 0.8)';
+            hint.style.opacity = '0';
+            
+            // Добавляем финальный эффект перед переходом
+            setTimeout(() => {
+                message.style.transform = 'scale(1.2)';
+                message.style.opacity = '0.9';
+                body.style.background = '#000';
+            }, 300);
+            
+            // Переход через 0.8 секунды
+            setTimeout(() => {
+                window.location.href = 'https://t.me/baranijhrash';
+            }, 800);
+        });
+        
+        // Эффект легкого свечения
+        setInterval(() => {
+            const currentColor = window.getComputedStyle(message).color;
+            const intensity = Math.random() * 0.2 + 0.05;
+            
+            message.style.textShadow = `0 0 ${Math.random() * 15 + 5}px rgba(160, 0, 0, ${intensity})`;
+        }, 1500);
+        
+        // Скрываем подсказку через 12 секунд
+        setTimeout(() => {
+            hint.style.opacity = '0';
+        }, 12000);
+        
+        // Инициализация при загрузке
+        window.addEventListener('load', () => {
+            createParticles();
+            
+            // Начальная анимация появления
+            setTimeout(() => {
+                message.style.transform = 'translateY(0)';
+                message.style.opacity = '1';
+            }, 100);
+        });
+    </script>
+</body>
+</html>
